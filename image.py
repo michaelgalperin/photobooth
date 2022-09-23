@@ -72,7 +72,7 @@ class Booth:
     def run(self):
         self.resize_images()
         self.assemble()
-        # self.print(self.full_path)
+        self.print(self.full_path)
         self.square_images()
         self.upload_images()
 

@@ -12,7 +12,7 @@ from .camera import Camera
 app = Flask(__name__)
 
 os.makedirs('images', exist_ok=True)
-# cam = Camera()
+cam = Camera()
 
 @app.route('/')
 def index():
@@ -21,13 +21,13 @@ def index():
 
 @app.route('/capture')
 def capture():
-    # timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
-    # image_dir = os.path.join('images', timestamp, 'raw')
-    # os.makedirs(image_dir)
-    # for i in range(3):
-    #     cam.capture()
-    # cam.capture()
-    # cam.download_n_most_recent_images(image_dir)
+    timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
+    image_dir = os.path.join('images', timestamp, 'raw')
+    os.makedirs(image_dir)
+    for i in range(3):
+        cam.capture()
+    cam.capture()
+    cam.download_n_most_recent_images(image_dir)
     return redirect(url_for('print'))
 
 
