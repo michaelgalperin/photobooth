@@ -1,9 +1,10 @@
-from flask import Flask, render_template, Response, redirect, url_for, flash
-import cv2
+from flask import Flask, render_template, Response, redirect, url_for, make_response, jsonify
 import os
+import sys
 from datetime import datetime
 from time import sleep
 import glob
+from threading import Thread
 
 
 from .image import Booth
@@ -12,31 +13,62 @@ from .camera import Camera
 app = Flask(__name__)
 
 os.makedirs('images', exist_ok=True)
-cam = Camera()
+# cam = Camera()
+current_text = 'init'
 
 @app.route('/')
 def index():
     """Video streaming home page."""
+    global current_text
+    current_text = '<h1><a href="/capture">start</a></h1>'
     return render_template('index.html')
 
 @app.route('/capture')
 def capture():
+    th = Thread(target=run_capture, args=())
+    th.start()
+    return render_template('index.html')
+
+def run_capture():
+    global current_text
     timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
     image_dir = os.path.join('images', timestamp, 'raw')
     os.makedirs(image_dir)
-    for i in range(3):
-        cam.capture()
-    cam.capture()
-    cam.download_n_most_recent_images(image_dir)
+    current_text = "<h1>get ready!</h1>"
+    sleep(3)
+    for _ in range(4):
+        for i in range(3, 0, -1):
+            current_text = f'<h1>{str(i)}...</h1>'
+            sleep(1)
+        current_text = '<h1>smile!!!</h1>(downloading image...)'
+        sleep(1)
+        # cam.capture()
+    # cam.download_n_most_recent_images(image_dir)
+    upload_and_print()
+    return 'done'
     return redirect(url_for('print'))
 
+@app.route('/status')
+def status():
+    global current_text
+    print(current_text, file=sys.stderr)
+    # return make_response({'text': current_text}, 200)
+    return current_text
 
 @app.route('/print')
-def print():
-    image_dir = max(glob.glob('images/*T*'))
-    b = Booth(image_dir)
-    b.run()
+def show_print_screen():
     return render_template('print.html')
+
+def upload_and_print():
+    global current_text
+    # image_dir = max(glob.glob('images/*T*'))
+    # b = Booth(image_dir)
+    current_text = "uploading..."
+    sleep(2)
+    current_text = "done"
+    # current_text = '<h1>printing!!</h1><h1><a href="/capture">restart</a></h1>'
+    # b.run()
+    
 
 
 if __name__ == '__main__':

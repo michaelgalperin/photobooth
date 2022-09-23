@@ -7,7 +7,7 @@
 import os
 from PIL import Image
 
-from .ig import upload
+# from .ig import upload
 
 BOOTH_TEXT = Image.open('text.png')
 
