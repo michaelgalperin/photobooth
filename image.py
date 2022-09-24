@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-# from .ig import upload
+from .ig import upload
 
 BOOTH_TEXT = Image.open("text.png")
 
@@ -61,8 +61,8 @@ class Booth:
         )
         half.save(os.path.join(self.image_dir, "booth.png"))
         full = Image.new("RGBA", (half.size[0], half.size[1] * 2 + self.top_margin * 2))
-        full.paste(half, (0, self.top_margin // 2))
-        full.paste(half, (0, half.size[1] + self.top_margin + self.top_margin // 2))
+        full.paste(half, (0, 0))
+        full.paste(half, (0, half.size[1] + self.top_margin))
         self.full_path = os.path.join(self.image_dir, "full.png")
         full.save(self.full_path)
 
@@ -74,4 +74,4 @@ class Booth:
         self.assemble()
         self.print(self.full_path)
         self.square_images()
-        # self.upload_images()
+        self.upload_images()
