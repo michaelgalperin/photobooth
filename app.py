@@ -23,6 +23,7 @@ app = Flask(__name__)
 os.makedirs("images", exist_ok=True)
 cam = Camera()
 current_text = "init"
+capture_in_progress = False
 
 
 @app.route("/")
@@ -35,8 +36,9 @@ def index():
 
 @app.route("/capture")
 def capture():
-    th = Thread(target=run_capture, args=())
-    th.start()
+    if not capture_in_progress:
+        th = Thread(target=run_capture, args=())
+        th.start()
     return render_template("index.html")
 
 
@@ -54,6 +56,8 @@ def show_print_screen():
 
 def run_capture():
     global current_text
+    global capture_in_progress
+    capture_in_progress = True
     timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
     image_dir = os.path.join("images", timestamp, "raw")
     os.makedirs(image_dir)
@@ -68,6 +72,7 @@ def run_capture():
         cam.capture()
     cam.download_n_most_recent_images(image_dir)
     upload_and_print()
+    capture_in_progress = False
 
 
 def upload_and_print():
