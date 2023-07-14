@@ -2,5 +2,22 @@
 
 {% block content %}
     <h1>@xandersphotobooth</h1>
-    <h1><a href="/capture">Capture</a></h1>
+    <p>(fyi these go on instagram, don't show your butt)</p>
+    <div id="pb-body">"hi"</div>
+    <script>
+        function update_text() {
+            const pb_body_url = {{ url_for("status")|tojson }}
+            const pb_body_div = document.getElementById("pb-body");
+            fetch(pb_body_url)
+                .then(response => response.text())
+                .then(function(text) {
+                    if (text == "done") {
+                        window.location = '/print';
+                    }
+                    console.log(text);
+                    document.getElementById("pb-body").innerHTML = text;
+                })
+        }
+        var t=setInterval(update_text,250);
+    </script>
 {% endblock %}
