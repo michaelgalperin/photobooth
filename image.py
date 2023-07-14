@@ -2,8 +2,23 @@ import os
 from PIL import Image
 
 from .ig import upload
+# from .banner import make_booth_text
 
-BOOTH_TEXT = Image.open("text.png")
+BOOTH_TEXT = Image.open("static/cheese.png")
+
+def paste_with_alpha(bg, fg):
+    """returns new image with fg pasted onto bg in center"""
+    # assumes fg is smaller than bg
+    fg2 = Image.new("RGBA", bg.size)
+    fg2.paste(
+        fg,
+        (
+            (fg2.size[0] - fg.size[0]) // 2,
+            (fg2.size[1] - fg.size[1]) // 2,
+        ),
+        fg,
+    )
+    return Image.alpha_composite(bg, fg2)
 
 
 class Booth:
@@ -46,19 +61,13 @@ class Booth:
         upload(self.square_paths)
 
     def assemble(self):
+        # BOOTH_TEXT = make_booth_text()
         half = Image.new("RGBA", (self.image_size[0] * 2, self.image_size[1] * 2))
         half.paste(self.resized[0], (0, 0))
         half.paste(self.resized[1], (self.image_size[0], 0))
         half.paste(self.resized[2], (0, self.image_size[1]))
         half.paste(self.resized[3], (self.image_size[0], self.image_size[1]))
-        half.paste(
-            BOOTH_TEXT,
-            (
-                (half.size[0] - BOOTH_TEXT.size[0]) // 2,
-                (half.size[1] - BOOTH_TEXT.size[1]) // 2,
-            ),
-            BOOTH_TEXT,
-        )
+        half = paste_with_alpha(half, BOOTH_TEXT)
         half.save(os.path.join(self.image_dir, "booth.png"))
         full = Image.new("RGBA", (half.size[0], half.size[1] * 2 + self.top_margin * 2))
         full.paste(half, (0, 0))

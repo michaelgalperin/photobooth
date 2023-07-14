@@ -28,7 +28,6 @@ capture_in_progress = False
 
 @app.route("/")
 def index():
-    """Video streaming home page."""
     global current_text
     current_text = '<h1><a href="/capture">start</a></h1>'
     return render_template("index.html")
@@ -51,7 +50,9 @@ def status():
 
 @app.route("/print")
 def show_print_screen():
-    return render_template("print.html")
+    global current_text
+    current_text = '<h1>printing!!!</h1><h1><a href="/capture">restart</a></h1>'
+    return render_template("index.html")
 
 
 def run_capture():
@@ -82,6 +83,7 @@ def upload_and_print():
     current_text = "processing..."
     b.run()
     current_text = "done"
+    current_text = '<h1>printing!!!</h1><h1><a href="/capture">restart</a></h1>'
 
 
 if __name__ == "__main__":
