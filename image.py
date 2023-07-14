@@ -2,9 +2,11 @@ import os
 from PIL import Image
 
 from .ig import upload
+
 # from .banner import make_booth_text
 
 BOOTH_TEXT = Image.open("static/cheese.png")
+
 
 def paste_with_alpha(bg, fg):
     """returns new image with fg pasted onto bg in center"""
