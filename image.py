@@ -3,8 +3,12 @@ from PIL import Image
 
 from .ig import upload
 
+## To create a dynamic image overlay, modify banner.py
+## to your liking, then uncomment this and the make_booth_text
+## call in Booth.assemble
 # from .banner import make_booth_text
 
+## To use a static image overlay, change this path
 BOOTH_TEXT = Image.open("static/cheese.png")
 
 
@@ -29,6 +33,13 @@ class Booth:
     def __init__(
         self, image_dir, image_size=(750, 500), square_size=1080, top_margin=50
     ):
+        """
+        image_dir: directory in which to save and load images
+        image_size: size in pixels of each of the four images to be printed
+        square_size: size in pixels of images to
+        top_margin: margin in pixels between half-sheets and at the bottom of the page
+
+        """
         self.image_dir = image_dir
         self.image_size = image_size
         self.square_size = square_size
@@ -44,6 +55,11 @@ class Booth:
             im.save(os.path.join(self.image_dir, "resized", f"{i}.jpg"))
 
     def square(self, im, size):
+        """
+        im: Image
+        size: size in pixels of final image.
+            Only resizes to this size, does not crop beyond squaring off.
+        """
         # assume landscape
         margin = (im.size[0] - im.size[1]) // 2
         box = (margin, 0, im.size[0] - margin, im.size[1])
@@ -63,14 +79,22 @@ class Booth:
         upload(self.square_paths)
 
     def assemble(self):
+        ## To create a dynamic image overlay, uncomment this and
+        ## make your own modifications to banner.py
         # BOOTH_TEXT = make_booth_text()
+
+        # Add all images to half sheet
         half = Image.new("RGBA", (self.image_size[0] * 2, self.image_size[1] * 2))
         half.paste(self.resized[0], (0, 0))
         half.paste(self.resized[1], (self.image_size[0], 0))
         half.paste(self.resized[2], (0, self.image_size[1]))
         half.paste(self.resized[3], (self.image_size[0], self.image_size[1]))
+        # add overlay and save
         half = paste_with_alpha(half, BOOTH_TEXT)
         half.save(os.path.join(self.image_dir, "booth.png"))
+        # half sheet -> full sheet
+        # changing the top margin options and image positioning may
+        # result in a better print
         full = Image.new("RGBA", (half.size[0], half.size[1] * 2 + self.top_margin * 2))
         full.paste(half, (0, 0))
         full.paste(half, (0, half.size[1] + self.top_margin))
@@ -78,6 +102,7 @@ class Booth:
         full.save(self.full_path)
 
     def print(self, path):
+        ## Print {path} on 5x7 paper with full bleed, from rear input slot
         os.system(f'lpr -o PageSize="5x7.Fullbleed" -o InputSlot=rear {path}')
 
     def run(self):
