@@ -27,6 +27,9 @@ maya = Image.open("static/maya.png").resize((160, 160), Image.Resampling.BOX)
 
 
 def make_header(text="Maya's Party!", font=font_header, image_size=(5000, 500)):
+    """
+    Creates randomly multicolored text
+    """
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # scrap image
     draw = ImageDraw.Draw(image)
     image2 = Image.new("RGBA", image_size, (0, 0, 0, 0))  # final image
@@ -52,6 +55,9 @@ def make_header(text="Maya's Party!", font=font_header, image_size=(5000, 500)):
 def make_footer(
     text="february 18, 2023", fill=(0, 0, 0), font=font_footer, image_size=(5000, 200)
 ):
+    """
+    Creates lower text
+    """
     image = Image.new("RGBA", image_size, (0, 0, 0, 0))  # scrap image
     draw = ImageDraw.Draw(image)
     draw.text((0, 0), text, fill=fill, font=font)
