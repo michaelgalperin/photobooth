@@ -68,10 +68,9 @@ def run_capture():
         for i in range(3, 0, -1):
             current_text = f"<h1>{str(i)}...</h1>"
             sleep(1)
-        current_text = "<h1>smile!!!</h1>(downloading image...)"
+        current_text = "<h1>smile!!!</h1>"
         sleep(1)
-        cam.capture()
-    cam.download_n_most_recent_images(image_dir)
+        cam.capture(image_dir)
     upload_and_print()
     capture_in_progress = False
 

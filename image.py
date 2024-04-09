@@ -12,6 +12,8 @@ from .ig import upload
 BOOTH_TEXT = Image.open("static/cheese.png")
 
 
+
+
 def paste_with_alpha(bg, fg):
     """returns new image with fg pasted onto bg in center"""
     # assumes fg is smaller than bg

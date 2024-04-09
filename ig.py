@@ -2,7 +2,7 @@ import logging
 from .ig_credentials import ig_username, ig_password
 from instagrapi import Client
 
-IG = False
+IG = True
 
 if IG:
     print("IG LOGGING IN")

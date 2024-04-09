@@ -26,7 +26,7 @@ font_footer = ImageFont.truetype("static/zx-spectrum.ttf", size=40)
 maya = Image.open("static/maya.png").resize((160, 160), Image.Resampling.BOX)
 
 
-def make_header(text="Maya's Party!", font=font_header, image_size=(5000, 500)):
+def make_header(text="Bess's Technicolor", font=font_header, image_size=(5000, 500)):
     """
     Creates randomly multicolored text
     """
@@ -53,7 +53,7 @@ def make_header(text="Maya's Party!", font=font_header, image_size=(5000, 500)):
 
 
 def make_footer(
-    text="february 18, 2023", fill=(0, 0, 0), font=font_footer, image_size=(5000, 200)
+    text="Birthday Extravaganza", fill=(0, 0, 0), font=font_footer, image_size=(5000, 200)
 ):
     """
     Creates lower text
