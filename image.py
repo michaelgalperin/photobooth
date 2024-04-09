@@ -100,12 +100,13 @@ class Booth:
         full = Image.new("RGBA", (half.size[0], half.size[1] * 2 + self.top_margin * 2))
         full.paste(half, (0, 0))
         full.paste(half, (0, half.size[1] + self.top_margin))
-        self.full_path = os.path.join(self.image_dir, "full.png")
+        self.full_path = os.path.abspath(os.path.join(self.image_dir, "full.png"))
         full.save(self.full_path)
 
     def print(self, path):
         ## Print {path} on 5x7 paper with full bleed, from rear input slot
-        os.system(f'lpr -o PageSize="5x7.Fullbleed" -o InputSlot=rear {path}')
+        print(path)
+        os.system(f'lpr -P "HP_Color_LaserJet_M255dw__64ADC0_" -o PageSize="5x7.Fullbleed" {path}')
 
     def run(self):
         self.resize_images()

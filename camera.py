@@ -8,19 +8,15 @@ import time
 
 class Camera:
 
-    def get_current_fileno_from_folder(self, folder):
-        files = [f[0] for f in self.cam.folder_list_files(folder)]
-        return self.strip_filename(max(files))
-
     def __init__(self):
         print("INIT CAMERA...")
 
         # Macbook self-facing camera is almost always port 0
         self.cam_port = 0
-        self.current_fileno = 1
+        self.current_fileno = 0
 
         # Initialize camera and wait 1 sec so it adjusts to room lighting
-        self.cam = cv2.VideoCapture(cam_port)
+        self.cam = cv2.VideoCapture(self.cam_port)
         time.sleep(1)
 
         # Make sure we can take a photo
@@ -31,7 +27,7 @@ class Camera:
             print("No image detected. I am sad!")
 
     def capture(self, target_dir):
-        print(datetime.now().strftime("%H:%M:%S"), file=sys.stderr)
+        print(datetime.now().strftime("%H:%M:%S"), file=sys.stderr) 
 
         # Take a new photo
         result, image = self.cam.read()
@@ -42,3 +38,6 @@ class Camera:
             print(datetime.now().strftime("%H:%M:%S"), file=sys.stderr)
         else:
             print("No image detected. I am sad!")
+    
+    def reset_counter(self):
+        self.current_fileno = 0

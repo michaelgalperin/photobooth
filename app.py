@@ -62,6 +62,7 @@ def run_capture():
     timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
     image_dir = os.path.join("images", timestamp, "raw")
     os.makedirs(image_dir)
+    cam.reset_counter()
     current_text = "<h1>get ready!</h1>"
     sleep(3)
     for _ in range(4):
@@ -69,8 +70,8 @@ def run_capture():
             current_text = f"<h1>{str(i)}...</h1>"
             sleep(1)
         current_text = "<h1>smile!!!</h1>"
-        sleep(1)
         cam.capture(image_dir)
+        sleep(1)
     upload_and_print()
     capture_in_progress = False
 
