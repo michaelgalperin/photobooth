@@ -2,6 +2,8 @@
 
 This is a fork of Xander Beberman's amazing Flask/gphoto2 [photobooth](https://github.com/xanwich/photobooth). I edited the code to use the front-facing camera on my Macbook Pro instead of interfacing with a fancy DSLR. Although the photos are less beautiful, the code ends up being simpler because it's much easier to save photos taken with the front-facing camera. The original documentation is below!
 
+[Here](https://onlinetexttools.com/convert-text-to-image) is a good website for making the text overlays.
+
 # Original Photobooth documentation
 
 ![Printed pictures from the photo booth](/docs/img/pics.webp)
