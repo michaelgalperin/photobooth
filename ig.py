@@ -21,7 +21,7 @@ def upload(images):
     try:
         media = cl.album_upload(
             images,
-            caption="I had the Besst time at Bess's Birthday Bonanza! Besitos!",
+            caption="I had the Besst time at Bess's Birthday Bonanza! Bessitos!",
         )
         print("uploaded", images)
     except:
