@@ -9,7 +9,7 @@ from .ig import upload
 # from .banner import make_booth_text
 
 ## To use a static image overlay, change this path
-BOOTH_TEXT = Image.open("static/cheese.png")
+BOOTH_TEXT = Image.open("static/bess_overlay.png")
 
 
 
