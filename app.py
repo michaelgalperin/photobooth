@@ -1,6 +1,7 @@
 from flask import (
     Flask,
     render_template,
+    send_from_directory,
     Response,
     redirect,
     url_for,
@@ -54,6 +55,9 @@ def show_print_screen():
     current_text = '<h1>printing!!!</h1><h1><a href="/capture">restart</a></h1>'
     return render_template("index.html")
 
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('images', filename)
 
 def run_capture():
     global current_text
@@ -80,11 +84,12 @@ def upload_and_print():
     global current_text
     image_dir = max(glob.glob("images/*T*"))
     b = Booth(image_dir)
-    current_text = "processing..."
+    current_text = "posting..."
     b.run()
     current_text = "done"
-    current_text = '<h1>printing!!!</h1><h1><a href="/capture">restart</a></h1>'
-
+    image_path = os.path.join(image_dir, "booth.png")
+    relative_image_path = os.path.relpath(image_path, start='images')
+    current_text = f'<img src="/images/{relative_image_path}" width=750><h1>done!!! <a href="/capture">restart</a></h1>'
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -9,8 +9,9 @@ from .ig import upload
 # from .banner import make_booth_text
 
 ## To use a static image overlay, change this path
-BOOTH_TEXT = Image.open("static/bess_overlay.png")
+BOOTH_TEXT = Image.open("static/jenna_dave_overlay.png")
 
+print_booth = False
 
 
 
@@ -105,8 +106,9 @@ class Booth:
 
     def print(self, path):
         ## Print {path} on 5x7 paper with full bleed, from rear input slot
-        print(path)
-        os.system(f'lpr -P "HP_Color_LaserJet_M255dw__64ADC0_" -o PageSize="5x7.Fullbleed" {path}')
+        if print_booth:
+            print(path)
+            os.system(f'lpr -P "HP_ColorLaserJet_M255_M256" -o media=Custom.5x7in {path}')
 
     def run(self):
         self.resize_images()
